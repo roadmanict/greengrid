@@ -1,0 +1,17 @@
+{
+  "name": "greengrid-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "dependencies": {
+    "restify": "^4.3.0",
+    "typescript": "^2.1.6",
+    "web3": "^0.18.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
