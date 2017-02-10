@@ -1,2 +1,2 @@
 #!/bin/bash
-docker run -ti --rm -v ~/.ethereum:/root/.ethereum -v ~/.ethereum/.ethash:/root/.ethash -p 30303:30303 ethereum
+docker run -ti --rm -v ~/.ethereum:/root/.ethereum -v ~/.ethereum/.ethash:/root/.ethash -p 30303:30303 -p 8545:8545 ethereum
