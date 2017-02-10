@@ -7,4 +7,6 @@ if [ ! -d "/root/.ethereum/geth" ]; then
 fi
 
 /geth --mine \
-    --minerthreads=1;
+    --minerthreads=1 \
+    --rpc \
+    --rpcaddr=0.0.0.0;
