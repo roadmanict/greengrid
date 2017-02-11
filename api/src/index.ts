@@ -1,37 +1,47 @@
 import * as restify from 'restify';
 import * as Web3 from 'web3';
 import {HelloWorldContract} from './contracts/HelloWorldContract';
+import {PowerExchangeContract} from './contracts/PowerContract';
 
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
 var coinbase = web3.eth.coinbase;
-console.log(coinbase);
-// web3.personal.unlockAccount(coinbase, 'password');
 web3.eth.defaultAccount = coinbase;
 
 let server = restify.createServer();
 
-let helloWorldContract = new HelloWorldContract(web3);
+server.use(restify.bodyParser());
 
-server.post('/hello/:number', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
-  let result = await helloWorldContract.new();
+// let helloWorldContract = new HelloWorldContract(web3);
+let powerContract = new PowerExchangeContract(web3);
+
+server.post('/create/', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let result = await powerContract.new();
 
   if (!result.isValid) {
     return response.json(400, 'Error');
   }
 
-  result.contract.set(parseInt(request.params.number));
-
   response.json(200, {address: result.contract.address});
 });
 
-server.get('/hello/:address', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
-  let contract = await helloWorldContract.get(request.params.address);
+server.get('/get/:address', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let contract = await powerContract.get(request.params.address);
 
   if (!contract) {
     return response.json(400, 'No contract found at address');
   }
 
   response.json(200, {value: contract.get()});
+});
+
+server.post('/set/:address', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let contract = await powerContract.get(request.params.address);
+
+  if (!contract) {
+    return response.json(400, 'No contract found at address');
+  }
+
+  response.json(200, {value: contract.set(request.body.new_value)});
 });
 
 server.listen(8080, () => {
