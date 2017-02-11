@@ -25,6 +25,7 @@ export class ContractLoader {
     for (let i = 0; i < this.availableContracts.length; i++) {
       let contract             = this.availableContracts[i];
       let contractSource       = fs.readFileSync('./contracts/' + contract + '.sol');
+      console.log(contractSource);
       let contractCompiled     = this.web3.eth.compile.solidity(contractSource);
       this.contracts[contract] = {
         abi:  contractCompiled.info.abiDefinition,

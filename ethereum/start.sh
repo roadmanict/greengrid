@@ -9,4 +9,5 @@ fi
 /geth --mine \
     --minerthreads=1 \
     --rpc \
-    --rpcaddr=0.0.0.0;
+    --rpcaddr=0.0.0.0 \
+    --solc=/usr/bin/solc;
