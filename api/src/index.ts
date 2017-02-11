@@ -12,10 +12,24 @@ let server = restify.createServer();
 
 let helloWorldContract = new HelloWorldContract(web3);
 
-helloWorldContract.new();
+server.post('/hello/:number', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let result = await helloWorldContract.new();
 
-server.post('/hello/:name', (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  if (!result.isValid) {
+    return response.json(400, 'Error');
+  }
 
+  console.log(request.params.number);
+
+  console.log('set', result.contract.set(parseInt(request.params.number)));
+
+  response.json(200, {address: result.contract.address});
+});
+
+server.get('/hello/:address', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let contract = await helloWorldContract.get(request.params.address);
+
+  response.json(200, {value: contract.get()});
 });
 
 server.listen(8080, () => {
