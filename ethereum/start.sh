@@ -10,4 +10,5 @@ fi
     --minerthreads=1 \
     --rpc \
     --rpcaddr=0.0.0.0 \
-    --solc=/usr/bin/solc;
+    --solc=/usr/bin/solc \
+    --unlock=0 --password="/root/password";
