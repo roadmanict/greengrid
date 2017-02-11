@@ -11,14 +11,20 @@ contract PowerExchange {
         mapping(uint => Transfer) transfers;
     }
 
-    mapping (address => Household) public households;
+    mapping (address => Household) public testing;
 
-    function newTransfer(int kwh) {
-        households[msg.sender][households[msg.sender].numTransfers] = Transfer({kwh: kwh, timeStamp: 0});
-        households[msg.sender].numTransfers = households[msg.sender].numTransfers++;
+
+    function PowerExchange() payable {
+    
     }
 
-    function get(address household) returns (Household test) {
-        return households[household];
+    function newTransfer(int kwh) {
+        Household blaat = testing[msg.sender];
+        blaat.transfers[blaat.numTransfers] = Transfer({kwh: kwh, timeStamp: 0});
+        blaat.numTransfers = blaat.numTransfers++;
+    }
+
+    function get(address household) returns (int kwh) {
+        return testing[household].transfers[testing[household].numTransfers--].kwh;
     }
 }

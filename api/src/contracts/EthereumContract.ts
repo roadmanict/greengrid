@@ -22,6 +22,7 @@ export class EthereumContract {
     return new Promise<ContractResult>((resolve: (result: ContractResult) => void) => {
       this.web3.eth.contract(this.abi).new({data: this.code}, (err: any, contract: any) => {
         if (err) {
+          console.log(err);
           return resolve({
             isValid: false
           });

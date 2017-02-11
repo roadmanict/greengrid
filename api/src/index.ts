@@ -14,7 +14,7 @@ server.use(restify.bodyParser());
 // let helloWorldContract = new HelloWorldContract(web3);
 let powerContract = new PowerExchangeContract(web3);
 
-server.post('/create/', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
+server.post('/create', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
   let result = await powerContract.new();
 
   if (!result.isValid) {
