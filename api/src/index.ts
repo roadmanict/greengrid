@@ -1,6 +1,5 @@
 import * as restify from 'restify';
 import * as Web3 from 'web3';
-import {HelloWorldContract} from './contracts/HelloWorldContract';
 import {PowerExchangeContract} from './contracts/PowerContract';
 
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
@@ -11,7 +10,6 @@ let server = restify.createServer();
 
 server.use(restify.bodyParser());
 
-// let helloWorldContract = new HelloWorldContract(web3);
 let powerContract = new PowerExchangeContract(web3);
 
 server.post('/create/', async (request: restify.Request, response: restify.Response, next: restify.Next) => {

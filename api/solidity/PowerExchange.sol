@@ -3,22 +3,37 @@ pragma solidity ^0.4.0;
 contract PowerExchange {
     struct Transfer {
         int kwh;
-        uint timeStamp;
+        uint timestamp;
     }
 
     struct Household {
-        uint numTransfers;
-        mapping(uint => Transfer) transfers;
+        bool exists;
+        Transfer[] transfers;
     }
 
-    mapping (address => Household) public households;
+    mapping(address => Household) public households;
+    address[] householdAddresses;
 
-    function newTransfer(int kwh) {
-        households[msg.sender][households[msg.sender].numTransfers] = Transfer({kwh: kwh, timeStamp: 0});
-        households[msg.sender].numTransfers = households[msg.sender].numTransfers++;
+    function newTransfer(int kwh, uint timestamp) {
+        var house = households[msg.sender];
+
+        if (house.exists) {
+            house.exists = true;
+            householdAddresses[householdAddresses.length] = msg.sender;
+        }
+        
+        house.transfers[house.transfers.length] = Transfer({kwh: kwh, timestamp: timestamp});
     }
 
-    function get(address household) returns (Household test) {
-        return households[household];
+    function getHouseholdAddresses() returns(address[]) {
+        return householdAddresses;
     }
+    
+    // function getTransferCount(address household) returns (uint) {
+    //     return households[household].transfers.length;
+    // }
+
+    // function get(address household, uint index) returns (transfers) {
+    //     transfers = households[household].transfers;
+    // }
 }
