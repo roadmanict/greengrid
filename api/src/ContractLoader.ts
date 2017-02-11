@@ -1,4 +1,4 @@
-let fs = require('fs');
+import * as fs from 'fs';
 
 export class ContractLoader {
   private web3: any;
@@ -21,7 +21,7 @@ export class ContractLoader {
     this.load();
   }
 
-  public load(): void {
+  private load(): void {
     for (let i = 0; i < this.availableContracts.length; i++) {
       let contract             = this.availableContracts[i];
       let contractSource       = fs.readFileSync('./contracts/' + contract + '.sol');
