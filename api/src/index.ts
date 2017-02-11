@@ -27,6 +27,10 @@ server.post('/hello/:number', async (request: restify.Request, response: restify
 server.get('/hello/:address', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
   let contract = await helloWorldContract.get(request.params.address);
 
+  if (!contract) {
+    return response.json(400, 'No contract found at address');
+  }
+
   response.json(200, {value: contract.get()});
 });
 
