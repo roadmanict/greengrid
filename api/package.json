@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "restify": "^4.3.0",
+    "tslint": "^4.4.2",
     "typescript": "^2.1.6",
     "web3": "^0.18.2"
   },
