@@ -35,7 +35,7 @@ export class EthereumContract {
     });
   }
 
-  public get(address: string) {
+  public get(address: string): any {
     return this.web3.eth.contract(this.abi).at(address);
   }
 }

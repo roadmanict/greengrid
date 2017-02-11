@@ -19,9 +19,7 @@ server.post('/hello/:number', async (request: restify.Request, response: restify
     return response.json(400, 'Error');
   }
 
-  console.log(request.params.number);
-
-  console.log('set', result.contract.set(parseInt(request.params.number)));
+  result.contract.set(parseInt(request.params.number));
 
   response.json(200, {address: result.contract.address});
 });
