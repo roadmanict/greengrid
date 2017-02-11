@@ -1,34 +1,36 @@
 pragma solidity ^0.4.0;
 
 contract PowerExchange {
-    struct Transfer {
-        int kwh;
+    struct EnergyLog {
+        uint produced;
+        uint consumed;
         uint timestamp;
     }
 
     struct Household {
         bool exists;
-        Transfer[] transfers;
+        EnergyLog[] logs;
     }
 
-    mapping(address => Household) households;
-    address[] householdAddresses;
+    mapping(uint => Household) households;
+    uint[] householdAddresses;
 
-    function newTransfer(int kwh, uint timestamp) {
-        var transfer = Transfer(kwh, timestamp);
+    function newLog(uint houseID, uint produced, uint consumed, uint timestamp) {
+        var log = EnergyLog(produced, consumed, timestamp);
 
-        if (exists(msg.sender) == false) {
-            householdAddresses.push(msg.sender);
-            households[msg.sender].exists = true;
+        if (exists(houseID) == false) {
+            householdAddresses.push(houseID);
+            households[houseID].exists = true;
         }
-        households[msg.sender].transfers.push(transfer);
+        
+        households[houseID].logs.push(log);
     }
 
-    function getHouseholdAddresses() constant returns(address[] addresses) {
+    function getHouseholdAddresses() constant returns(uint[] addresses) {
         addresses = householdAddresses;
     }
 
-    function exists(address house) constant returns(bool exists) {
+    function exists(uint house) constant returns(bool exists) {
         exists = false;
         
         for (uint i = 0; i < householdAddresses.length; i++) {
@@ -39,12 +41,14 @@ contract PowerExchange {
         }
     }
     
-    function getTransferCount(address household) constant returns (uint length) {
-        length = households[household].transfers.length;
+    function getLogCount(uint household) constant returns (uint length) {
+        length = households[household].logs.length;
     }
 
-    function get(address household, uint index) constant returns (int kwh, uint timestamp) {
-        kwh = households[household].transfers[index].kwh;
-        timestamp = households[household].transfers[index].timestamp;
+    function get(uint household, uint index) constant returns (uint produced, uint consumed, uint timestamp) {
+        var log = households[household].logs[index];
+        produced = log.produced;
+        consumed = log.consumed;
+        timestamp = log.timestamp;
     }
 }

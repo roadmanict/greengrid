@@ -10,7 +10,7 @@ let server = restify.createServer();
 server.use(restify.bodyParser());
 
 let powerContract = new PowerExchangeContract(web3);
-let powerContractAddress = '0xeb6a49f16f976833a4f5d123b76b4f8b6db5edd9';
+let powerContractAddress = '0xdc7825891cf45d305e67f370a8cb17e79f0862a1';
 let powerContractInstance = powerContract.get(powerContractAddress);
 
 server.post('/init', async (request: restify.Request, response: restify.Response, next: restify.Next) => {
@@ -31,8 +31,8 @@ server.get('/households/:address/exists', (request: restify.Request, response: r
   response.json(200, powerContractInstance.exists(request.params.address));
 });
 
-server.get('/households/:address/transfers', (request: restify.Request, response: restify.Response, next: restify.Next) => {
-  let count = powerContractInstance.getTransferCount(request.params.address);
+server.get('/households/:address/logs', (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let count = powerContractInstance.getLogCount(request.params.address);
 
   let transfers = [] as any[];
 
@@ -40,8 +40,9 @@ server.get('/households/:address/transfers', (request: restify.Request, response
     let transferResult = powerContractInstance.get(request.params.address, i);
 
     let transfer = {
-      kwh: parseInt(transferResult[0]),
-      timestamp: parseInt(transferResult[1])
+      produced: parseInt(transferResult[0]),
+      consumed: parseInt(transferResult[1]),
+      timestamp: parseInt(transferResult[2])
     };
 
     transfers.push(transfer);
@@ -50,8 +51,8 @@ server.get('/households/:address/transfers', (request: restify.Request, response
   response.json(200, transfers);
 });
 
-server.post('/addTransfer', (request: restify.Request, response: restify.Response, next: restify.Next) => {
-  let result = powerContractInstance.newTransfer(request.body.kwh, Date.now(), {gas: 1000000});
+server.post('/log', (request: restify.Request, response: restify.Response, next: restify.Next) => {
+  let result = powerContractInstance.newLog(request.body.produced, request.body.consumed, Date.now(), {gas: 1000000});
 
   response.json(200, result);
 });
